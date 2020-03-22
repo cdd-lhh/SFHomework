@@ -2,55 +2,43 @@ import java.util.Arrays;
 
 public class BinaryOrder {
     public static void main(String[] args) {
-        int list[] = {1, 5, 9, 2, 6, 3, 11, 15, 18, 19};
-        merge(list, 0, list.length - 1);
+        int list[] = {1, 5, 9, 2, 6, 3, 11, 15, 18, 19};    //6, 3, 11, 15, 18, 19
+        int temp[] = new int[list.length];
+        merge(list, 0, list.length - 1,temp);
         System.out.println(Arrays.toString(list));
     }
 
 
-        public static void merge(int list[], int start, int end){
-        int middle = (start + end) / 2;
+        public static void merge(int list[], int start, int end, int[] temp){
         if(start < end){
-            merge(list,start,middle);
-            merge(list,middle+1,end);
-            mergeSort(list,start,middle,end);
+            int middle = (start + end) / 2;
+            merge(list,start,middle,temp);
+            merge(list,middle+1,end,temp);
+            mergeSort(list,start,middle,end,temp);
         }
     }
 
-    public static void mergeSort(int list[],int start, int middle, int end) {
-        int mid = (start + end) / 2 + 1;
-        int startIndex = start;
-        int endIndex = end;
+    public static void mergeSort(int[] list,int start,int middle,int end,int[] temp){
+        int p = start;
+        int q = middle+1;
         int index = 0;
-        int middleIndex = middle;
-        int[] nums = new int[end - start + 1];
-        while (startIndex <= middleIndex && mid <= endIndex) {
-            if (list[startIndex] < list[mid] && startIndex <= middleIndex) {
-                nums[index++] = list[startIndex++];
-
-            }
-            if (list[startIndex] > list[mid] && mid <= endIndex) {
-                nums[index++] = list[mid++];
-
-            }
+        while(p <= middle && q <= end){
+            if(list[p] <= list[q])
+                temp[index++] = list[p++];
+            else
+                temp[index++] = list[q++];
         }
-        while (startIndex <= middleIndex) {
-            nums[index++] = list[startIndex++];
-        }
-
-        //右边剩余
-        while (mid <= end) {
-            nums[index++] = list[mid++];
-        }
-
-
-        for (int i = 0; i < nums.length; i++) {
-            list[i + start] = nums[i];
-
+        while(p <= middle)
+            temp[index++] = list[p++];
+        while(q <= end)
+            temp[index++] = list[q++];
+        index = 0;
+        while(start <= end){
+            list[start++] = temp[index++];
         }
     }
-
 }
+
 
 
 
